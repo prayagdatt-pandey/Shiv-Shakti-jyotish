@@ -1,0 +1,110 @@
+HTML
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>शिव शक्ति ज्योतिष ज्ञान</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #fff8e7;
+  margin: 0;
+  padding: 15px;
+}
+header {
+  background: #8b0000;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  border-radius: 12px;
+}
+h1 { font-size: 24px; }
+.container {
+  background: white;
+  padding: 20px;
+  margin-top: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px #ccc;
+}
+input, button {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  font-size: 16px;
+  box-sizing: border-box;
+  border-radius: 8px;
+}
+input { border: 1px solid #ccc; }
+button {
+  background: #ff9800;
+  color: white;
+  border: none;
+  font-weight: bold;
+}
+.result {
+  background: #fff3cd;
+  padding: 15px;
+  margin-top: 15px;
+  border-radius: 8px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>🕉️ शिव शक्ति ज्योतिष ज्ञान</h1>
+<p>वैदिक ज्योतिष कुंडली एवं फलादेश सॉफ्टवेयर</p>
+</header>
+
+<div class="container">
+<h2>जन्म विवरण दर्ज करें</h2>
+
+<label>नाम</label>
+<input id="name" placeholder="जातक का नाम">
+
+<label>जन्म तारीख</label>
+<input id="dob" type="date">
+
+<label>जन्म समय</label>
+<input id="time" type="time">
+
+<label>जन्म स्थान</label>
+<input id="place" placeholder="जन्म स्थान">
+
+<button onclick="showResult()">कुंडली फलादेश देखें</button>
+
+<div id="result"></div>
+</div>
+
+<script>
+function showResult() {
+  let name = document.getElementById("name").value;
+  let dob = document.getElementById("dob").value;
+  let time = document.getElementById("time").value;
+  let place = document.getElementById("place").value;
+
+  if (!name || !dob || !time || !place) {
+    alert("कृपया सभी जन्म विवरण भरें");
+    return;
+  }
+
+  document.getElementById("result").innerHTML =
+  `<div class="result">
+  <h3>जन्म विवरण</h3>
+  <p><b>नाम:</b> ${name}</p>
+  <p><b>जन्म तारीख:</b> ${dob}</p>
+  <p><b>जन्म समय:</b> ${time}</p>
+  <p><b>जन्म स्थान:</b> ${place}</p>
+  <hr>
+  <h3>🕉️ ज्योतिष फलादेश</h3>
+  <p>आपके जन्म विवरण सुरक्षित रूप से इस प्रारंभिक सॉफ्टवेयर में दर्ज किए गए हैं।</p>
+  <p>अगले चरण में लग्न, राशि, ग्रह स्थिति, भाव, दशा और विस्तृत फलादेश प्रणाली जोड़ी जाएगी।</p>
+  </div>`;
+}
+</script>
+
+</body>
+</html>
