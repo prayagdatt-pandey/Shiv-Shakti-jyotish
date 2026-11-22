@@ -4,50 +4,116 @@ HTML
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>शिव शक्ति ज्योतिष ज्ञान</title>
+<title>आदित्य ज्योतिष फलादेश</title>
 
 <style>
-body {
-  font-family: Arial, sans-serif;
-  background: #fff8e7;
-  margin: 0;
-  padding: 15px;
+* {
+  box-sizing: border-box;
 }
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #fff8e8;
+  color: #222;
+}
+
 header {
-  background: #8b0000;
+  background: linear-gradient(135deg, #ff9800, #e65100);
   color: white;
   text-align: center;
-  padding: 20px;
-  border-radius: 12px;
+  padding: 25px 15px;
 }
-h1 { font-size: 24px; }
+
+header h1 {
+  margin: 0;
+  font-size: 25px;
+}
+
+header p {
+  margin-top: 8px;
+}
+
 .container {
+  max-width: 800px;
+  margin: auto;
+  padding: 15px;
+}
+
+.card {
   background: white;
+  border-radius: 15px;
   padding: 20px;
-  margin-top: 15px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px #ccc;
+  margin-bottom: 18px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
 }
-input, button {
+
+h2 {
+  color: #b45309;
+}
+
+label {
+  display: block;
+  margin-top: 14px;
+  font-weight: bold;
+}
+
+input, select {
   width: 100%;
-  padding: 12px;
-  margin: 8px 0;
-  font-size: 16px;
-  box-sizing: border-box;
+  padding: 13px;
+  margin-top: 6px;
+  border: 1px solid #ccc;
   border-radius: 8px;
+  font-size: 16px;
 }
-input { border: 1px solid #ccc; }
+
 button {
+  width: 100%;
+  padding: 16px;
+  margin-top: 20px;
   background: #ff9800;
   color: white;
   border: none;
+  border-radius: 10px;
+  font-size: 18px;
   font-weight: bold;
 }
+
+button:active {
+  background: #e65100;
+}
+
 .result {
+  display: none;
+}
+
+.info {
   background: #fff3cd;
   padding: 15px;
-  margin-top: 15px;
-  border-radius: 8px;
+  border-radius: 10px;
+  line-height: 1.8;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+th {
+  background: #ffe0b2;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  color: #777;
 }
 </style>
 </head>
@@ -55,55 +121,138 @@ button {
 <body>
 
 <header>
-<h1>🕉️ शिव शक्ति ज्योतिष ज्ञान</h1>
-<p>वैदिक ज्योतिष कुंडली एवं फलादेश सॉफ्टवेयर</p>
+  <h1>🕉️ आदित्य ज्योतिष फलादेश</h1>
+  <p>वैदिक ज्योतिष एवं कुंडली विश्लेषण</p>
 </header>
 
 <div class="container">
+
+<div class="card">
 <h2>जन्म विवरण दर्ज करें</h2>
 
 <label>नाम</label>
-<input id="name" placeholder="जातक का नाम">
+<input type="text" id="name" placeholder="अपना नाम लिखें">
 
 <label>जन्म तारीख</label>
-<input id="dob" type="date">
+<input type="date" id="dob">
 
 <label>जन्म समय</label>
-<input id="time" type="time">
+<input type="time" id="time">
 
 <label>जन्म स्थान</label>
-<input id="place" placeholder="जन्म स्थान">
+<input type="text" id="place" placeholder="जन्म स्थान लिखें">
 
-<button onclick="showResult()">कुंडली फलादेश देखें</button>
-
-<div id="result"></div>
+<button onclick="showKundli()">कुंडली फलादेश देखें</button>
 </div>
 
+<div id="result" class="result">
+
+<div class="card">
+<h2>📜 जन्म विवरण</h2>
+<div id="birthDetails" class="info"></div>
+</div>
+
+<div class="card">
+<h2>🪔 ज्योतिष फलादेश</h2>
+<div class="info">
+आपके जन्म विवरण सुरक्षित रूप से इस प्रारंभिक सॉफ्टवेयर में प्रदर्शित किए गए हैं।
+वास्तविक ग्रह गणना जोड़ने के अगले चरण में लग्न, राशि, ग्रह स्थिति,
+भाव, दशा तथा विस्तृत फलादेश प्रदर्शित होंगे।
+</div>
+</div>
+
+<div class="card">
+<h2>🌟 ग्रह स्थिति</h2>
+
+<table>
+<tr>
+<th>ग्रह</th>
+<th>राशि</th>
+<th>भाव</th>
+</tr>
+
+<tr><td>सूर्य</td><td>गणना बाकी</td><td>—</td></tr>
+<tr><td>चंद्र</td><td>गणना बाकी</td><td>—</td></tr>
+<tr><td>मंगल</td><td>गणना बाकी</td><td>—</td></tr>
+<tr><td>बुध</td><td>गणना बाकी</td><td>—</td></tr>
+<tr><td>गुरु</td><td>गणना बाकी</td><td>—</td></tr>
+<tr><td>शुक्र</td><td>गणना बाकी</td><td>—</td></tr>
+<tr><td>शनि</td><td>गणना बाकी</td><td>—</td></tr>
+<tr><td>राहु</td><td>गणना बाकी</td><td>—</td></tr>
+<tr><td>केतु</td><td>गणना बाकी</td><td>—</td></tr>
+
+</table>
+</div>
+
+<div class="card">
+<h2>🔮 12 भाव विश्लेषण</h2>
+
+<table>
+<tr>
+<th>भाव</th>
+<th>विषय</th>
+<th>फलादेश</th>
+</tr>
+
+<tr><td>1</td><td>लग्न एवं व्यक्तित्व</td><td>गणना बाकी</td></tr>
+<tr><td>2</td><td>धन एवं परिवार</td><td>गणना बाकी</td></tr>
+<tr><td>3</td><td>पराक्रम एवं भाई-बहन</td><td>गणना बाकी</td></tr>
+<tr><td>4</td><td>माता एवं सुख</td><td>गणना बाकी</td></tr>
+<tr><td>5</td><td>संतान एवं बुद्धि</td><td>गणना बाकी</td></tr>
+<tr><td>6</td><td>रोग एवं शत्रु</td><td>गणना बाकी</td></tr>
+<tr><td>7</td><td>विवाह एवं साझेदारी</td><td>गणना बाकी</td></tr>
+<tr><td>8</td><td>आयु एवं रहस्य</td><td>गणना बाकी</td></tr>
+<tr><td>9</td><td>भाग्य एवं धर्म</td><td>गणना बाकी</td></tr>
+<tr><td>10</td><td>कर्म एवं व्यवसाय</td><td>गणना बाकी</td></tr>
+<tr><td>11</td><td>लाभ एवं इच्छाएँ</td><td>गणना बाकी</td></tr>
+<tr><td>12</td><td>व्यय एवं मोक्ष</td><td>गणना बाकी</td></tr>
+
+</table>
+</div>
+
+<div class="card">
+<h2>📅 दशा प्रणाली</h2>
+
+<div class="info">
+महादशा, अंतर्दशा और प्रत्यंतर दशा की वास्तविक गणना
+अगले चरण में जोड़ी जाएगी।
+</div>
+</div>
+
+</div>
+</div>
+
+<footer>
+🕉️ आदित्य ज्योतिष फलादेश 🕉️
+</footer>
+
 <script>
-function showResult() {
+
+function showKundli() {
+
   let name = document.getElementById("name").value;
   let dob = document.getElementById("dob").value;
   let time = document.getElementById("time").value;
   let place = document.getElementById("place").value;
 
   if (!name || !dob || !time || !place) {
-    alert("कृपया सभी जन्म विवरण भरें");
+    alert("कृपया सभी जन्म विवरण भरें।");
     return;
   }
 
-  document.getElementById("result").innerHTML =
-  `<div class="result">
-  <h3>जन्म विवरण</h3>
-  <p><b>नाम:</b> ${name}</p>
-  <p><b>जन्म तारीख:</b> ${dob}</p>
-  <p><b>जन्म समय:</b> ${time}</p>
-  <p><b>जन्म स्थान:</b> ${place}</p>
-  <hr>
-  <h3>🕉️ ज्योतिष फलादेश</h3>
-  <p>आपके जन्म विवरण सुरक्षित रूप से इस प्रारंभिक सॉफ्टवेयर में दर्ज किए गए हैं।</p>
-  <p>अगले चरण में लग्न, राशि, ग्रह स्थिति, भाव, दशा और विस्तृत फलादेश प्रणाली जोड़ी जाएगी।</p>
-  </div>`;
+  document.getElementById("birthDetails").innerHTML =
+    "<b>नाम:</b> " + name + "<br><br>" +
+    "<b>जन्म तारीख:</b> " + dob + "<br><br>" +
+    "<b>जन्म समय:</b> " + time + "<br><br>" +
+    "<b>जन्म स्थान:</b> " + place;
+
+  document.getElementById("result").style.display = "block";
+
+  document.getElementById("result").scrollIntoView({
+    behavior: "smooth"
+  });
 }
+
 </script>
 
 </body>
