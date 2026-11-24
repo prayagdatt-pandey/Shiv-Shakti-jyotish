@@ -1,1 +1,257 @@
-and
+HTML
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>आदित्य ज्योतिष फलादेश</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#fff8e8;color:#292929}
+header{background:linear-gradient(135deg,#e87500,#a64b08);color:white;text-align:center;padding:25px 12px}
+header h1{margin:0;font-size:27px}
+header p{margin:8px 0 0}
+.container{max-width:850px;margin:auto;padding:14px}
+.card{background:white;border-radius:18px;padding:20px;margin:15px 0;box-shadow:0 4px 15px #0001}
+h2{color:#a64b08;margin-top:0}
+label{display:block;font-weight:bold;margin:13px 0 6px}
+input,button{width:100%;padding:13px;border:1px solid #ccc;border-radius:10px;font-size:16px}
+button{background:#ff9800;color:white;border:0;font-weight:bold;margin-top:20px}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th{background:#ffe0b2}
+th,td{border:1px solid #ddd;padding:10px;text-align:center}
+.result{overflow-x:auto}
+.box{background:#fff3cd;padding:14px;border-radius:12px;margin:10px 0}
+.small{font-size:13px;color:#666}
+footer{text-align:center;padding:25px;color:#9b570b}
+</style>
+</head>
+<body>
+<header>
+<h1>🕉️ आदित्य ज्योतिष फलादेश</h1>
+<p>वैदिक ज्योतिष जन्म कुंडली गणना</p>
+</header>
+
+<div class="container">
+
+<div class="card">
+<h2>📜 जन्म विवरण दर्ज करें</h2>
+
+<label>नाम</label>
+<input id="name" placeholder="अपना नाम लिखें">
+
+<label>जन्म तारीख</label>
+<input id="date" type="date">
+
+<label>जन्म समय</label>
+<input id="time" type="time" value="12:00">
+
+<label>जन्म स्थान</label>
+<input id="place" placeholder="जन्म स्थान">
+
+<label>अक्षांश (Latitude)</label>
+<input id="lat" type="number" step="any" placeholder="उदाहरण: 29.60">
+
+<label>देशांतर (Longitude)</label>
+<input id="lon" type="number" step="any" placeholder="उदाहरण: 79.65">
+
+<button onclick="calculate()">🔮 कुंडली गणना करें</button>
+</div>
+
+<div id="output"></div>
+</div>
+
+<footer>🕉️ आदित्य ज्योतिष फलादेश 🕉️</footer>
+
+<script>
+const signs=["मेष","वृषभ","मिथुन","कर्क","सिंह","कन्या","तुला","वृश्चिक","धनु","मकर","कुंभ","मीन"];
+const signLords=["मंगल","शुक्र","बुध","चंद्र","सूर्य","बुध","शुक्र","मंगल","गुरु","शनि","शनि","गुरु"];
+const nakshatras=["अश्विनी","भरणी","कृत्तिका","रोहिणी","मृगशिरा","आर्द्रा","पुनर्वसु","पुष्य","आश्लेषा","मघा","पूर्वाफाल्गुनी","उत्तराफाल्गुनी","हस्त","चित्रा","स्वाती","विशाखा","अनुराधा","ज्येष्ठा","मूल","पूर्वाषाढ़ा","उत्तराषाढ़ा","श्रवण","धनिष्ठा","शतभिषा","पूर्वाभाद्रपद","उत्तराभाद्रपद","रेवती"];
+const nakLords=["केतु","शुक्र","सूर्य","चंद्र","मंगल","राहु","गुरु","शनि","बुध"];
+
+function norm(x){return (x%360+360)%360}
+function sind(x){return Math.sin(x*Math.PI/180)}
+function cosd(x){return Math.cos(x*Math.PI/180)}
+function tand(x){return Math.tan(x*Math.PI/180)}
+function atan2d(y,x){return Math.atan2(y,x)*180/Math.PI}
+function fix(x){return norm(x)}
+function signName(l){return signs[Math.floor(norm(l)/30)]}
+function degreeText(l){
+ let x=norm(l),d=Math.floor(x%30),m=Math.floor((x%1)*60),s=Math.floor((((x%1)*60)%1)*60);
+ return d+"° "+m+"' "+s+'"';
+}
+function nakInfo(l){
+ let n=norm(l)/(360/27),idx=Math.floor(n),p=Math.floor((n-idx)*4)+1;
+ return {name:nakshatras[idx],pada:p,lord:nakLords[idx%9]};
+}
+function julianDate(date){
+ return date.getTime()/86400000+2440587.5;
+}
+function orbitalElements(d){
+ return {
+ N:0,
+ i:0,
+ w:0,
+ a:0,
+ e:0,
+ M:0
+ };
+}
+function planetOrbit(name,d){
+ let o={};
+ if(name==="Mercury"){
+ o={N:48.3313+3.24587e-5*d,i:7.0047+5e-8*d,w:29.1241+1.01444e-5*d,a:.387098,e:.205635+5.59e-10*d,M:168.6562+4.0923344368*d};
+ }
+ if(name==="Venus"){
+ o={N:76.6799+2.46590e-5*d,i:3.3946+2.75e-8*d,w:54.8910+1.38374e-5*d,a:.723330,e:.006773-1.302e-9*d,M:48.0052+1.6021302244*d};
+ }
+ if(name==="Earth"){
+ o={N:0,i:0,w:282.9404+4.70935e-5*d,a:1,e:.016709-1.151e-9*d,M:356.0470+.9856002585*d};
+ }
+ if(name==="Mars"){
+ o={N:49.5574+2.11081e-5*d,i:1.8497-1.78e-8*d,w:286.5016+2.92961e-5*d,a:1.523688,e:.093405+2.516e-9*d,M:18.6021+.5240207766*d};
+ }
+ if(name==="Jupiter"){
+ o={N:100.4542+2.76854e-5*d,i:1.3030-1.557e-7*d,w:273.8777+1.64505e-5*d,a:5.20256,e:.048498+4.469e-9*d,M:19.8950+.0830853001*d};
+ }
+ if(name==="Saturn"){
+ o={N:113.6634+2.38980e-5*d,i:2.4886-1.081e-7*d,w:339.3939+2.97661e-5*d,a:9.55475,e:.055546-9.499e-9*d,M:316.9670+.0334442282*d};
+ }
+ if(name==="Uranus"){
+ o={N:74.0005+1.3978e-5*d,i:.7733+1.9e-8*d,w:96.6612+3.0565e-5*d,a:19.18171-1.55e-8*d,e:.047318+7.45e-9*d,M:142.5905+.011725806*d};
+ }
+ if(name==="Neptune"){
+ o={N:131.7806+3.0173e-5*d,i:1.7700-2.55e-7*d,w:272.8461-6.027e-6*d,a:30.05826+3.313e-8*d,e:.008606+2.15e-9*d,M:260.2471+.005995147*d};
+ }
+ return o;
+}
+function heliocentric(name,d){
+ let o=planetOrbit(name,d);
+ let M=norm(o.M),E=M+o.e*180/Math.PI*sind(M)*(1+o.e*cosd(M));
+ for(let i=0;i<6;i++) E=E-(E-M-o.e*180/Math.PI*sind(E))/(1-o.e*cosd(E));
+ let xv=o.a*(cosd(E)-o.e),yv=o.a*Math.sqrt(1-o.e*o.e)*sind(E);
+ let v=atan2d(yv,xv),r=Math.sqrt(xv*xv+yv*yv);
+ let x=r*(cosd(o.N)*cosd(v+o.w)-sind(o.N)*sind(v+o.w)*cosd(o.i));
+ let y=r*(sind(o.N)*cosd(v+o.w)+cosd(o.N)*sind(v+o.w)*cosd(o.i));
+ let z=r*sind(v+o.w)*sind(o.i);
+ return {x,y,z,r};
+}
+function sunLongitude(d){
+ let e=heliocentric("Earth",d);
+ return norm(atan2d(-e.y,-e.x));
+}
+function moonLongitude(d){
+ let N=norm(125.1228-.0529538083*d);
+ let i=5.1454;
+ let w=norm(318.0634+.1643573223*d);
+ let a=60.2666,e=.054900,M=norm(115.3654+13.0649929509*d);
+ let E=M+e*180/Math.PI*sind(M)*(1+e*cosd(M));
+ for(let k=0;k<5;k++)E=E-(E-M-e*180/Math.PI*sind(E))/(1-e*cosd(E));
+ let xv=a*(cosd(E)-e),yv=a*Math.sqrt(1-e*e)*sind(E);
+ let v=atan2d(yv,xv),r=Math.sqrt(xv*xv+yv*yv);
+ let x=r*(cosd(N)*cosd(v+w)-sind(N)*sind(v+w)*cosd(i));
+ let y=r*(sind(N)*cosd(v+w)+cosd(N)*sind(v+w)*cosd(i));
+ let lon=atan2d(y,x);
+ let sun=sunLongitude(d);
+ let L=norm(N+w+M),D=norm(L-sun),F=norm(L-N);
+ lon+=-1.274*sind(M-2*D)+.658*sind(2*D)-.186*sind(0.98564736*d)-.059*sind(2*M-2*D)-.057*sind(M-2*D+2*F)+.053*sind(M+2*D)+.046*sind(2*D-M)+.041*sind(M-F)-.035*sind(D)-.031*sind(M+F)-.015*sind(2*F-2*D)+.011*sind(M-4*D);
+ return norm(lon);
+}
+function lahiriApprox(d){
+ return 23.85+0.0000385*d/365.25;
+}
+function calculate(){
+ let name=document.getElementById("name").value||"जातक";
+ let ds=document.getElementById("date").value;
+ let ts=document.getElementById("time").value;
+ let place=document.getElementById("place").value||"जन्म स्थान";
+ let lat=parseFloat(document.getElementById("lat").value);
+ let lon=parseFloat(document.getElementById("lon").value);
+ if(!ds||!ts||isNaN(lat)||isNaN(lon)){
+ alert("कृपया जन्म तारीख, समय, अक्षांश और देशांतर भरें।");
+ return;
+ }
+ let date=new Date(ds+"T"+ts+":00+05:30");
+ let jd=julianDate(date);
+ let d=jd-2451543.5;
+ let ay=lahiriApprox(d);
+ let positions={};
+ positions["सूर्य"]=sunLongitude(d);
+ positions["चंद्र"]=moonLongitude(d);
+ let earth=heliocentric("Earth",d);
+ ["Mercury","Venus","Mars","Jupiter","Saturn","Uranus","Neptune"].forEach(p=>{
+ let hp=heliocentric(p,d);
+ let x=hp.x-earth.x,y=hp.y-earth.y;
+ positions[p]=norm(atan2d(y,x));
+ });
+ let rahu=norm(125.04452-1934.136261*d/365.25);
+ positions["राहु"]=rahu;
+ positions["केतु"]=norm(rahu+180);
+ let planetHindi={Mercury:"बुध",Venus:"शुक्र",Mars:"मंगल",Jupiter:"गुरु",Saturn:"शनि",Uranus:"अरुण",Neptune:"वरुण"};
+ let names=["सूर्य","चंद्र","मंगल","बुध","गुरु","शुक्र","शनि","राहु","केतु"];
+ let english=["Sun","Moon","Mars","Mercury","Jupiter","Venus","Saturn","Rahu","Ketu"];
+ let tropicalSun=norm(positions["सूर्य"]);
+ let ob=23.4393-3.563e-7*d;
+ let gmst=norm(280.46061837+360.98564736629*(jd-2451545)+.000387933*((jd-2451545)/36525)**2);
+ let lst=norm(gmst+lon);
+ let asc=norm(atan2d(-cosd(lst),sind(ob)*tand(lat)+cosd(ob)*sind(lst)));
+ asc=norm(asc-ay);
+ let lagnaSign=Math.floor(asc/30);
+ let rows="";
+ names.forEach((p,i)=>{
+ let l=norm(positions[p]-ay);
+ let sn=Math.floor(l/30);
+ let house=((sn-lagnaSign+12)%12)+1;
+ let nk=nakInfo(l);
+ rows+=`<tr><td>${p}</td><td>${signName(l)}</td><td>${degreeText(l)}</td><td>${house}</td><td>${nk.name}</td><td>${nk.pada}</td></tr>`;
+ });
+ let bhav="";
+ for(let i=0;i<12;i++){
+ let sn=(lagnaSign+i)%12;
+ bhav+=`<tr><td>${i+1}</td><td>${signs[sn]}</td><td>${signLords[sn]}</td><td>${(i+1===1?"लग्न एवं व्यक्तित्व":i+1===2?"धन एवं परिवार":i+1===3?"पराक्रम एवं भाई-बहन":i+1===4?"सुख एवं माता":i+1===5?"संतान एवं विद्या":i+1===6?"रोग एवं ऋण":i+1===7?"विवाह एवं साझेदारी":i+1===8?"आयु एवं परिवर्तन":i+1===9?"भाग्य एवं धर्म":i+1===10?"कर्म एवं करियर":i+1===11?"लाभ एवं इच्छाएँ":"व्यय एवं मोक्ष")}</td></tr>`;
+ }
+ let nk=nakInfo(positions["चंद्र"]-ay);
+ document.getElementById("output").innerHTML=`
+ <div class="card">
+ <h2>📜 जन्म विवरण</h2>
+ <div class="box"><b>नाम:</b> ${name}<br><br>
+ <b>जन्म तारीख:</b> ${ds}<br><br>
+ <b>जन्म समय:</b> ${ts}<br><br>
+ <b>जन्म स्थान:</b> ${place}<br><br>
+ <b>लग्न:</b> ${signName(asc)}<br><br>
+ <b>लग्न अंश:</b> ${degreeText(asc)}<br><br>
+ <b>चंद्र नक्षत्र:</b> ${nk.name}, चरण ${nk.pada}</div>
+ </div>
+ <div class="card">
+ <h2>🪐 ग्रह स्थिति</h2>
+ <div class="result"><table>
+ <tr><th>ग्रह</th><th>राशि</th><th>अंश</th><th>भाव</th><th>नक्षत्र</th><th>चरण</th></tr>
+ ${rows}</table></div>
+ </div>
+ <div class="card">
+ <h2>🔮 12 भाव विश्लेषण</h2>
+ <div class="result"><table>
+ <tr><th>भाव</th><th>राशि</th><th>भाव स्वामी</th><th>विषय</th></tr>
+ ${bhav}</table></div>
+ </div>
+ <div class="card">
+ <h2>🪔 ज्योतिष फलादेश</h2>
+ <div class="box">
+ <b>लग्न राशि:</b> ${signName(asc)}<br><br>
+ <b>लग्न स्वामी:</b> ${signLords[lagnaSign]}<br><br>
+ <b>चंद्र राशि:</b> ${signName(positions["चंद्र"]-ay)}<br><br>
+ <b>चंद्र नक्षत्र:</b> ${nk.name}<br><br>
+ <b>नक्षत्र चरण:</b> ${nk.pada}<br><br>
+ <b>नक्षत्र स्वामी:</b> ${nk.lord}
+ </div>
+ <p>ग्रहों की स्थिति के आधार पर आगे विस्तृत फलादेश, दशा, योग तथा जीवन के विभिन्न विषयों का विश्लेषण जोड़ा जा सकता है।</p>
+ </div>
+ <div class="card small">
+ <b>गणना सूचना:</b> यह संस्करण प्रारंभिक खगोलीय गणितीय मॉडल से ग्रह स्थिति निकालता है। अंशों में अंतर संभव है। सटीक वैदिक फलादेश हेतु उच्च-परिशुद्धता Ephemeris और मानक अयनांश गणना अगली अवस्था में जोड़ी जाएगी।
+ </div>`;
+}
+</script>
+</body>
+</html>
+
