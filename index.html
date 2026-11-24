@@ -99,6 +99,7 @@ function orbitalElements(d){
  };
 }
 function planetOrbit(name,d){
+ let planetHindi={Mercury:"बुध",Venus:"शुक्र",Mars:"मंगल",Jupiter:"गुरु",Saturn:"शनि",Uranus:"अरुण",Neptune:"वरुण"};
  let o={};
  if(name==="Mercury"){
  o={N:48.3313+3.24587e-5*d,i:7.0047+5e-8*d,w:29.1241+1.01444e-5*d,a:.387098,e:.205635+5.59e-10*d,M:168.6562+4.0923344368*d};
